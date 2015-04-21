@@ -38,6 +38,13 @@ typedef struct fnewheap {
 } fnewheap_t;
 
 int main() {
+	/* Note: Comment out the givemefreelist(int) method in my_malloc.c and my_malloc.h to run the test*/
+
+
+
+
+	
+	/*---------------my_malloc Functional Test---------------------------------------------------------------*/
 	int ind = 0;
 	// fnewheap_t* errornow = (fnewheap_t*)my_malloc(sizeof(fnewheap_t));
 	testcase_t* abc = (testcase_t*)my_malloc(sizeof(testcase_t));
@@ -79,10 +86,13 @@ int main() {
 	// 		printf("freelist[%d]->size: NULL\n", ind);
 	// 	}
 	// }
+
+	/*-----------------Buddy Algorithm Check-----------------------------------------------------------------*/
 	char* cha1 = (char*)my_malloc(sizeof(char));
 	char* cha2 = (char*)my_malloc(sizeof(char));
 	char* cha3 = (char*)my_malloc(sizeof(char));
 	char* cha4 = (char*)my_malloc(sizeof(char));
+	printf("Should be no error: %d\n", ERRNO);
 	printf("cha1: %lu\n", (uintptr_t) cha1);
 	printf("cha2: %lu\n", (uintptr_t) cha2);
 	printf("cha3: %lu\n", (uintptr_t) cha3);
@@ -122,6 +132,8 @@ int main() {
 		curr = curr->next;
 	}
 	printf("\n");
+
+	/*---------------my_calloc Functional Test---------------------------------------------------------------*/
 	long* array1;
 	array1 = (long*) my_calloc(100, sizeof(long));
 	printf("array address: %lu\n", (uintptr_t)array1);
@@ -132,6 +144,8 @@ int main() {
 	printf("Size of long: %lu\n", sizeof(long));
 	printf("Size of int: %lu\n", sizeof(int));
 	printf("Size of char: %lu\n", sizeof(char));
+
+	/*---------------my_memmove Functional Test--------------------------------------------------------------*/
 	int testint = 1449;
 	int* movetest = &testint;
 	int* destptr;
@@ -140,9 +154,24 @@ int main() {
 	printf("dst: %lu\n", (uintptr_t)destptr);
 	my_memmove(destptr, movetest, 2);
 	printf("result of my_memmove: %d\n", *movetest);
-	/*
-	 * Test code goes here
-	 */
 
+	/*---------------Error Code Test-------------------------------------------------------------------------*/
+	oversize_t* testover = (oversize_t*)my_malloc(sizeof(oversize_t));
+	printf("Should be Single too large: %d\n", ERRNO);
+	my_calloc(10000, sizeof(long));
+	printf("Should be Single too large: %d\n", ERRNO);
+	my_malloc(sizeof(fnewheap_t));
+	my_malloc(sizeof(fnewheap_t));
+	my_malloc(sizeof(fnewheap_t));
+	void* havetobefreed = my_malloc(sizeof(fnewheap_t));
+	my_malloc(sizeof(fnewheap_t));
+	my_malloc(1);
+	printf("Should be out of memory: %d\n", ERRNO);
+	printf("%d\n", testover == NULL);
+	my_free(havetobefreed);
+	my_malloc(sizeof(fnewheap_t));
+	printf("Should be no error: %d\n", ERRNO);
+	my_calloc(10, sizeof(long));
+	printf("Should be out of memory: %d\n", ERRNO);
 	return 0;
 }

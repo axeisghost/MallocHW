@@ -67,6 +67,6 @@ void* my_malloc_splitor(int, size_t);
 
 void my_free_combiner(int, metadata_t*);
 
-metadata_t* givemefreelist(int);
+// metadata_t* givemefreelist(int);
 
 #endif /* __MY_MALLOC_H__ */

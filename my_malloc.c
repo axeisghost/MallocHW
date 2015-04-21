@@ -100,6 +100,9 @@ void* my_calloc(size_t num, size_t size)
 	} else {
 		int ind;
 		void* ret = my_malloc(realsize);
+		if (ret == NULL) {
+			return NULL;
+		}
 		realsize = realsize - sizeof(metadata_t);
 		for (ind = 0; ind < (long)realsize; ind++) {
 			*((char*) (((uintptr_t) ret) + (unsigned int)ind)) = 0;
@@ -202,7 +205,7 @@ void my_free_combiner(int ii, metadata_t* metaptr)
 	freelist[ii] = metaptr;
 }
 
-metadata_t* givemefreelist(int ii)
-{
-	return freelist[ii];
-}
+// metadata_t* givemefreelist(int ii)
+// {
+// 	return freelist[ii];
+// }
